@@ -1,103 +1,205 @@
-# SpendWise
+<div align="center">
 
-**Track your money. Manage your future.**
+  <h1>SpendWise</h1>
 
-A responsive personal expense tracker built with HTML, CSS, and vanilla JavaScript. Expenses stay in your browser: no account, framework, paid API, or backend is needed.
+  <p><strong>Track your money. Manage your future.</strong></p>
 
-## Features
+  <p>A fast, private, and zero-dependency personal expense tracker built with native modern web standards.<br />Everything runs locally in your browser—no accounts, no backend, and no third-party tracking.</p>
 
-- Add expenses with a name, amount, category, and date
-- Food, Travel, Education, Shopping, and Other categories
-- Lifetime and current-month spending summaries, plus top category
-- Visual category totals; search and category filters for transaction history
-- Dark and Light mode toggle with persistent preference and harmonious contrast
-- One-click PDF export to save your complete financial overview to your PC
-- Newest-first history and individual delete actions
-- LocalStorage persistence, rupee formatting, input validation, and responsive layout
+  <p>
+    <a href="https://prathamesh55-MAV239.github.io/Spend-Wise/">
+      <img src="https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-2f72e8?style=for-the-badge&logo=github&logoColor=white" alt="Live Demo" />
+    </a>
+  </p>
 
-## Files
+  <p>
+    <img src="https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white" alt="HTML5" />
+    <img src="https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white" alt="CSS3" />
+    <img src="https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=flat-square&logo=javascript&logoColor=black" alt="JavaScript" />
+    <img src="https://img.shields.io/badge/Storage-LocalStorage-39bd91?style=flat-square" alt="LocalStorage" />
+    <img src="https://img.shields.io/badge/License-MIT-blue?style=flat-square" alt="License: MIT" />
+    <img src="https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square" alt="PRs Welcome" />
+  </p>
 
-- `index.html` — dashboard layout, accessible controls, and theme initialization
-- `style.css` — harmonious light/dark design tokens, responsive layout, and print/PDF styles
-- `script.js` — validation, summaries, filters, theme toggle, PDF generator, and LocalStorage
-- `html2pdf.bundle.min.js` — bundled offline-ready PDF generator library
+</div>
 
-## Run locally on Windows
+---
 
-**Important:** Start the server from the project folder that contains `index.html`, `style.css`, and `script.js`. If the server is started in `C:\Users\YourName` instead, the browser may show a folder listing instead of SpendWise.
+## Table of Contents
 
-### If the project is not cloned yet (Command Prompt)
+- [Overview](#overview)
+- [Key Features](#key-features)
+- [Live Demo](#live-demo)
+- [Quick Start](#quick-start)
+  - [Prerequisites](#prerequisites)
+  - [Run on Windows](#run-on-windows)
+  - [Run on macOS & Linux](#run-on-macos--linux)
+- [Project Architecture](#project-architecture)
+- [Usage Guide](#usage-guide)
+- [Data Storage & Privacy](#data-storage--privacy)
+- [Deployment](#deployment)
+- [Contributing](#contributing)
+- [License](#license)
 
-Open Command Prompt, then run:
+---
 
-```bat
-cd /d "%USERPROFILE%"
-git clone https://github.com/prathamesh55-MAV239/Spend-Wise.git
-cd /d "%USERPROFILE%\Spend-Wise"
-dir
-py -m http.server 8000
-```
+## Overview
 
-Check that `dir` lists `index.html`, `style.css`, and `script.js`. Keep this window open and visit <http://localhost:8000> or <http://127.0.0.1:8000>. Stop the server with `Ctrl+C`.
+**SpendWise** is designed for individuals who want effortless and instant financial tracking without handing their private financial habits over to a remote cloud service or navigating bloated accounting software.
 
-If you already cloned the project somewhere else, do not clone it again. In Command Prompt, change to its actual folder first, for example:
+By leveraging pure HTML5, modern CSS3 custom properties, and vanilla ES6+ JavaScript, SpendWise delivers instantaneous page loads, zero runtime dependencies, and robust local persistence.
 
-```bat
-cd /d "C:\Users\YourName\Documents\Spend-Wise"
-dir
-py -m http.server 8000
-```
+---
 
-Replace that example path with the folder where your repository is saved. `Get-ChildItem` is a PowerShell command, not a Command Prompt command; use `dir` in Command Prompt.
+## Key Features
 
-### If `py` is not recognized or port 8000 is busy
+- 🌙 **Adaptive Dark & Light Theme**
+  - Switch between light and dark themes at any time using the header toggle.
+  - Automatically detects system preference (`prefers-color-scheme`).
+  - Stores preference in `localStorage` with zero Flash of Unstyled Content (FOUC).
+  - High-contrast, WCAG-conscious color palette engineered for clarity and eye comfort.
 
-- Try `python -m http.server 8000` if Python is installed but the Windows launcher is unavailable.
-- If port 8000 is already occupied, use `py -m http.server 8001` and open <http://localhost:8001>.
-- A `404` for `/` means the current server folder doesn't contain an `index.html`; stop it with `Ctrl+C`, `cd` into the project folder, and restart.
-- A `404` for `/favicon.ico` alone is harmless and does not prevent the app from working.
-- If the page loads without styling or behavior, confirm the project files are together in the folder, then hard-refresh the browser.
+- 📥 **One-Click PDF Statement Export**
+  - Download an executive overview report saved directly as a `.pdf` file to your PC.
+  - Includes summary metrics (Total Expenditure, Monthly Total, Top Category), category percentage shares, and itemized transaction tables.
+  - Bundled offline-ready engine with fallback support for standard browser printing.
 
-## Run locally on macOS/Linux
+- 📊 **Real-time Spending Intelligence**
+  - Total expenditure counter with automatic Indian Rupee (`₹`) formatting.
+  - Automatic calculation of current calendar month spending.
+  - Dynamic identification of your top spending category with visual spend amounts.
+  - Proportional category progress bars displaying relative financial allocations.
 
-From the cloned project directory, run:
+- 🔍 **Instant Search & Category Filtering**
+  - Search transactions on-the-fly by title or notes.
+  - Filter history by category (**Food**, **Travel**, **Education**, **Shopping**, **Other**).
+  - Responsive empty states guide you when no entries or filter matches exist.
+
+- 🔒 **100% Private by Design**
+  - All expense entries are stored strictly on your device via browser `localStorage`.
+  - Zero external database connections, zero telemetry, and zero tracking cookies.
+
+- 📱 **Fully Responsive Layout**
+  - Fluid mobile-first layout tested across mobile screens, tablets, laptops, and ultra-wide desktop monitors.
+  - Accessible form controls with input validation and clear inline feedback.
+
+---
+
+## Live Demo
+
+SpendWise can be hosted directly on GitHub Pages with zero server setup:
+
+🔗 **[Launch SpendWise Live](https://prathamesh55-MAV239.github.io/Spend-Wise/)**
+
+---
+
+## Quick Start
+
+### Prerequisites
+
+You only need a modern web browser (Google Chrome, Microsoft Edge, Mozilla Firefox, or Apple Safari). Python is optional but convenient for serving files locally.
+
+### Run on Windows
+
+1. Open **Command Prompt** or **PowerShell**:
+   ```bat
+   git clone https://github.com/prathamesh55-MAV239/Spend-Wise.git
+   cd Spend-Wise
+   python -m http.server 8000
+   ```
+2. Open your browser and navigate to:
+   ```
+   http://localhost:8000
+   ```
+3. Stop the server at any time with `Ctrl + C`.
+
+> **Note:** If `python` is not recognized, try `py -m http.server 8000` or double-click `index.html` to open it directly in your browser.
+
+### Run on macOS & Linux
 
 ```bash
+git clone https://github.com/prathamesh55-MAV239/Spend-Wise.git
+cd Spend-Wise
 python3 -m http.server 8000
 ```
+Then visit `http://localhost:8000`.
 
-Open <http://localhost:8000> and leave the terminal running while you use the app.
+---
 
-## Use the app
+## Project Architecture
 
-1. **Add expenses:** Enter a description, positive amount, category, and date; choose **Add expense**.
-2. **Review summaries:** Review total expenditure, top category, and this month's spending.
-3. **Filter and search:** Search by description or filter history by category.
-4. **Dark / Light mode:** Click the **Dark / Light mode** toggle in the top bar to switch themes. Your choice is remembered automatically.
-5. **Download PDF overview:** Click **Download PDF** to export and save a structured executive spending report to your computer.
-6. **Delete:** Delete an individual transaction using its **Delete** button.
-7. **Persistence:** Refresh the page to confirm that entries persist.
+```
+Spend-Wise/
+├── .gitignore              # Ignored operating system and editor cache files
+├── index.html              # Accessible semantic layout and dashboard interface
+├── style.css               # Design tokens, dark/light theme, and print stylesheets
+├── script.js               # Reactive state, validation, filters, and PDF generator
+├── html2pdf.bundle.min.js  # Offline-ready client-side PDF rendering library
+├── LICENSE                 # MIT License terms
+└── README.md               # Project documentation and specifications
+```
 
-## Data and privacy
+---
 
-Entries are stored in this browser's LocalStorage under `spendwise-expenses`. Theme preference is saved under `spendwise-theme`. They are not uploaded or synchronized. Clearing site data or using another browser/device means the saved copy is not available there.
+## Usage Guide
 
-## Manual test checklist
+1. **Record an Expense**:
+   - Provide an item description (e.g., *"Grocery restocking"*).
+   - Enter an amount (positive values up to 2 decimal places).
+   - Select a relevant category and choose a date.
+   - Click **Add expense**.
 
-- [ ] Add a valid expense and confirm summary and history update.
-- [ ] Toggle dark and light mode; check colors, cards, and input visibility in both modes.
-- [ ] Click "Download PDF" and verify the overview PDF report downloads.
-- [ ] Reject blank description, zero/negative amount, amount with more than 2 decimal places, and invalid date.
-- [ ] Check category totals and current-month summary.
-- [ ] Search and category filters work and can be cleared.
-- [ ] Delete an entry and verify totals update.
-- [ ] Refresh and verify persistence; delete all entries and check the empty state.
-- [ ] Check mobile and desktop widths and browser console.
+2. **Toggle Dark / Light Mode**:
+   - Click the theme button in the upper-right corner of the topbar to switch between night and day modes.
 
-## GitHub Pages
+3. **Export Your Financial Statement**:
+   - Click **Download PDF** in the topbar to immediately generate and save a formatted spending report.
 
-To publish, open the repository **Settings → Pages**, choose **Deploy from a branch**, select `main` and `/(root)`, then save. Once the deployment completes, GitHub Pages will show the live URL. The expected address is <https://prathamesh55-MAV239.github.io/Spend-Wise/> if Pages is enabled for this repository.
+4. **Search and Filter**:
+   - Use the search bar in the **Recent expenses** panel to find items by name.
+   - Use the category dropdown to view transactions from a specific bucket.
+
+5. **Delete Records**:
+   - Click the **Delete** button next to any transaction to remove it and immediately update all metrics.
+
+---
+
+## Data Storage & Privacy
+
+SpendWise stores records under the following keys in your browser's `window.localStorage`:
+
+| Key | Type | Description |
+| :--- | :--- | :--- |
+| `spendwise-expenses` | `Array<Object>` | JSON array containing expense records (`id`, `name`, `amount`, `category`, `date`, `createdAt`) |
+| `spendwise-theme` | `String` | User preference string (`"dark"` or `"light"`) |
+
+*Your data never leaves your computer. Clearing your browser cache or site data will reset the application state.*
+
+---
+
+## Deployment
+
+Deploying your own instance to **GitHub Pages** takes under 30 seconds:
+
+1. Fork or push this repository to GitHub.
+2. Navigate to **Settings** > **Pages**.
+3. Under **Build and deployment** > **Branch**, select `main` and root `/`.
+4. Click **Save**. GitHub will automatically provide a secure HTTPS link within 1–2 minutes.
+
+---
+
+## Contributing
+
+Contributions, bug reports, and suggestions are welcome!
+
+1. Fork the Project.
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`).
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`).
+4. Push to the Branch (`git push origin feature/AmazingFeature`).
+5. Open a Pull Request.
+
+---
 
 ## License
 
-See [LICENSE](LICENSE).
+Distributed under the MIT License. See [LICENSE](LICENSE) for more information.
