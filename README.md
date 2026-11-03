@@ -19,28 +19,51 @@ A responsive personal expense tracker built with HTML, CSS, and vanilla JavaScri
 - `style.css` — visual styling and responsive layouts
 - `script.js` — validation, summaries, filters, and LocalStorage
 
-## Run locally
+## Run locally on Windows
 
-The server must be started **from the directory containing `index.html`**. In the terminal, change to your project folder first, then run one of these commands:
+**Important:** Start the server from the project folder that contains `index.html`, `style.css`, and `script.js`. If the server is started in `C:\Users\YourName` instead, the browser may show a folder listing instead of SpendWise.
 
-**Windows (Python launcher):**
+### If the project is not cloned yet (Command Prompt)
 
-```powershell
-cd path\to\Spend-Wise
+Open Command Prompt, then run:
+
+```bat
+cd /d "%USERPROFILE%"
+git clone https://github.com/prathamesh55-MAV239/Spend-Wise.git
+cd /d "%USERPROFILE%\Spend-Wise"
+dir
 py -m http.server 8000
 ```
 
-If `py` is not recognized, try `python -m http.server 8000`. On macOS/Linux, use `python3 -m http.server 8000`.
+Check that `dir` lists `index.html`, `style.css`, and `script.js`. Keep this window open and visit <http://localhost:8000> or <http://127.0.0.1:8000>. Stop the server with `Ctrl+C`.
 
-Then open <http://localhost:8000> (or <http://127.0.0.1:8000>) in your browser. Keep the terminal open while using the site. Stop the server with `Ctrl+C`.
+If you already cloned the project somewhere else, do not clone it again. In Command Prompt, change to its actual folder first, for example:
 
-### If localhost does not open
+```bat
+cd /d "C:\Users\YourName\Documents\Spend-Wise"
+dir
+py -m http.server 8000
+```
 
-- Confirm the terminal's current directory contains `index.html`, `style.css`, and `script.js`. Run `dir` in Windows PowerShell or `ls` in macOS/Linux to check.
-- If the command is missing, install Python or use the VS Code **Live Server** extension: open `index.html`, right-click, choose **Open with Live Server**.
-- If port 8000 is already in use, start another port, for example `py -m http.server 8001`, then visit <http://localhost:8001>.
-- A `404` page usually means the server was started in the wrong folder; stop it with `Ctrl+C`, `cd` to the folder containing `index.html`, and restart.
-- If the page loads without styling or behavior, verify that `style.css` and `script.js` are beside `index.html`, then hard-refresh the browser.
+Replace that example path with the folder where your repository is saved. `Get-ChildItem` is a PowerShell command, not a Command Prompt command; use `dir` in Command Prompt.
+
+### If `py` is not recognized or port 8000 is busy
+
+- Try `python -m http.server 8000` if Python is installed but the Windows launcher is unavailable.
+- If port 8000 is already occupied, use `py -m http.server 8001` and open <http://localhost:8001>.
+- A `404` for `/` means the current server folder doesn't contain an `index.html`; stop it with `Ctrl+C`, `cd` into the project folder, and restart.
+- A `404` for `/favicon.ico` alone is harmless and does not prevent the app from working.
+- If the page loads without styling or behavior, confirm the three project files are together in the folder, then hard-refresh the browser.
+
+## Run locally on macOS/Linux
+
+From the cloned project directory, run:
+
+```bash
+python3 -m http.server 8000
+```
+
+Open <http://localhost:8000> and leave the terminal running while you use the app.
 
 ## Use the app
 
