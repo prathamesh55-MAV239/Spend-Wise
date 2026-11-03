@@ -5,85 +5,78 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="SpendWise is a personal expense tracker that helps you monitor spending and stay on top of your budget."
+      content="SpendWise helps you track everyday expenses, understand spending by category, and manage your money with confidence."
     />
-    <title>SpendWise | Personal Expense Tracker</title>
+    <meta name="theme-color" content="#f4f7fb" />
+    <title>SpendWise — Personal Expense Tracker</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
   </head>
   <body>
     <div class="app-shell">
       <header class="topbar">
-        <div class="brand-block">
-          <p class="eyebrow">Personal Expense Tracker</p>
-          <h1>SpendWise</h1>
-        </div>
-        <div class="tagline">Track your money. Manage your future.</div>
+        <a class="brand" href="./" aria-label="SpendWise home">
+          <span class="brand-mark" aria-hidden="true">S</span>
+          <span class="brand-name">spendwise<span>.</span></span>
+        </a>
+        <p class="tagline">Track your money. <strong>Manage your future.</strong></p>
       </header>
 
       <main class="dashboard">
-        <section class="summary-grid" aria-label="Expense summary cards">
+        <section class="welcome-row" aria-labelledby="page-title">
+          <div>
+            <p class="eyebrow">YOUR PERSONAL FINANCE SPACE</p>
+            <h1 id="page-title">Your spending, <span>in focus.</span></h1>
+            <p class="intro">A clearer picture of where your money goes.</p>
+          </div>
+          <div class="local-badge"><span aria-hidden="true">●</span> Your data stays on this device</div>
+        </section>
+
+        <section class="summary-grid" aria-label="Expense summary">
           <article class="summary-card total-card">
-            <span class="summary-label">Total Expenditure</span>
+            <div class="card-label"><span class="card-icon total-icon" aria-hidden="true">₹</span><span>Total expenditure</span></div>
             <strong id="total-expenses">₹0.00</strong>
-            <small id="transaction-count">0 transactions</small>
+            <small id="transaction-count">0 transactions recorded</small>
           </article>
-
           <article class="summary-card">
-            <span class="summary-label">Top Category</span>
+            <div class="card-label"><span class="card-icon category-icon" aria-hidden="true">↗</span><span>Top category</span></div>
             <strong id="top-category">No data</strong>
-            <small id="top-category-amount">₹0.00</small>
+            <small id="top-category-amount">₹0.00 spent</small>
           </article>
-
           <article class="summary-card">
-            <span class="summary-label">This Month</span>
+            <div class="card-label"><span class="card-icon month-icon" aria-hidden="true">▦</span><span>This month</span></div>
             <strong id="monthly-total">₹0.00</strong>
-            <small>Current month</small>
+            <small>Spending this calendar month</small>
           </article>
         </section>
 
-        <section class="content-grid">
-          <div class="panel form-panel">
+        <section class="content-grid" aria-label="Expense entry and category totals">
+          <section class="panel form-panel" aria-labelledby="add-expense-title">
             <div class="section-header">
-              <h2>Add Expense</h2>
+              <div><p class="eyebrow">QUICK ENTRY</p><h2 id="add-expense-title">Add an expense</h2></div>
+              <span class="section-symbol" aria-hidden="true">＋</span>
             </div>
-
             <form id="expense-form" novalidate>
               <div class="field-group">
-                <label for="expense-name">Expense name</label>
-                <input
-                  id="expense-name"
-                  name="expense-name"
-                  type="text"
-                  placeholder="e.g. Grocery shopping"
-                  maxlength="80"
-                  required
-                />
+                <label for="expense-name">What did you spend on?</label>
+                <input id="expense-name" name="expense-name" type="text" placeholder="e.g. Lunch with friends" maxlength="80" autocomplete="off" required />
               </div>
-
               <div class="field-row">
                 <div class="field-group">
                   <label for="expense-amount">Amount</label>
-                  <input
-                    id="expense-amount"
-                    name="expense-amount"
-                    type="number"
-                    step="0.01"
-                    min="0.01"
-                    placeholder="0.00"
-                    required
-                  />
+                  <div class="amount-input"><span aria-hidden="true">₹</span><input id="expense-amount" name="expense-amount" type="number" inputmode="decimal" min="0.01" max="999999999.99" step="0.01" placeholder="0.00" required /></div>
+                  <small class="field-hint">Enter a positive amount, up to 2 decimal places.</small>
                 </div>
-
                 <div class="field-group">
                   <label for="expense-category">Category</label>
                   <select id="expense-category" name="expense-category" required>
-                    <option value="">Select</option>
+                    <option value="">Choose category</option>
                     <option value="Food">Food</option>
                     <option value="Travel">Travel</option>
                     <option value="Education">Education</option>
@@ -92,41 +85,38 @@
                   </select>
                 </div>
               </div>
-
-              <div class="field-group">
+              <div class="field-group date-group">
                 <label for="expense-date">Date</label>
                 <input id="expense-date" name="expense-date" type="date" required />
               </div>
-
-              <button type="submit" class="primary-btn">Add Expense</button>
-              <p id="form-message" class="form-message" aria-live="polite"></p>
+              <button type="submit" class="primary-btn"><span aria-hidden="true">＋</span> Add expense</button>
+              <p id="form-message" class="form-message" role="status" aria-live="polite"></p>
             </form>
-          </div>
+          </section>
 
-          <div class="panel">
+          <section class="panel category-panel" aria-labelledby="category-title">
             <div class="section-header">
-              <h2>Category Summary</h2>
+              <div><p class="eyebrow">SPENDING BREAKDOWN</p><h2 id="category-title">By category</h2></div>
+              <span class="section-note">All time</span>
             </div>
             <div id="category-summary" class="category-summary" aria-live="polite"></div>
-          </div>
+          </section>
         </section>
 
-        <section class="panel history-panel">
-          <div class="section-header">
-            <h2>Expense History</h2>
+        <section class="panel history-panel" aria-labelledby="history-title">
+          <div class="section-header history-header">
+            <div><p class="eyebrow">YOUR RECORD</p><h2 id="history-title">Recent expenses</h2></div>
+            <span class="section-note">Newest first</span>
           </div>
-
           <div id="empty-state" class="empty-state" aria-live="polite">
             <div class="empty-icon" aria-hidden="true">₹</div>
-            <h3>No expenses yet</h3>
-            <p>Add your first expense to start tracking your spending.</p>
+            <h3>Your story starts here</h3>
+            <p>Add your first expense and your spending summary will appear here.</p>
           </div>
-
-          <ul id="expense-list" class="expense-list" aria-live="polite"></ul>
+          <ul id="expense-list" class="expense-list" aria-label="Expense history" aria-live="polite"></ul>
         </section>
       </main>
+      <footer class="footer"><span>SpendWise</span><span>Simple tracking. Smarter choices.</span></footer>
     </div>
-
-    <script src="script.js"></script>
   </body>
 </html>
