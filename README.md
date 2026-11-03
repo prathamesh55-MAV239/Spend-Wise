@@ -2,94 +2,73 @@
 
 **Track your money. Manage your future.**
 
-SpendWise is a responsive, beginner-friendly personal expense tracker built with HTML, CSS, and vanilla JavaScript. Expenses stay in your browser; no account, framework, paid API, or backend is required.
+A responsive personal expense tracker built with HTML, CSS, and vanilla JavaScript. Expenses stay in your browser: no account, framework, paid API, or backend is needed.
 
 ## Features
 
 - Add expenses with a name, amount, category, and date
-- Categories: Food, Travel, Education, Shopping, and Other
-- See lifetime total, current-month total, and highest-spending category
-- Review category totals with visual bars
-- Search by expense name and filter by category
-- See transactions ordered by date, newest first
-- Delete individual expenses
-- Save data in browser LocalStorage
-- Validate names, positive amounts, decimal precision, categories, and dates
-- Format amounts as Indian Rupees
-- Responsive layout, accessible labels/status messages, and safe text rendering
+- Food, Travel, Education, Shopping, and Other categories
+- Lifetime and current-month spending summaries, plus top category
+- Visual category totals; search and category filters for transaction history
+- Newest-first history and individual delete actions
+- LocalStorage persistence, rupee formatting, input validation, and responsive layout
 
-## Project structure
+## Files
 
-```text
-Spend-Wise/
-├── index.html
-├── style.css
-├── script.js
-├── README.md
-├── LICENSE
-└── assets/           # optional screenshot and project images
-```
+- `index.html` — dashboard layout and accessible controls
+- `style.css` — visual styling and responsive layouts
+- `script.js` — validation, summaries, filters, and LocalStorage
 
 ## Run locally
 
-No build step or dependencies are required.
+The server must be started **from the directory containing `index.html`**. In the terminal, change to your project folder first, then run one of these commands:
 
-```bash
-git clone https://github.com/prathamesh55-MAV239/Spend-Wise.git
-cd Spend-Wise
-python -m http.server 8000
+**Windows (Python launcher):**
+
+```powershell
+cd path\to\Spend-Wise
+py -m http.server 8000
 ```
 
-Open <http://localhost:8000> in your browser. You may also open `index.html` directly, but a local server is recommended for consistent browser storage behavior.
+If `py` is not recognized, try `python -m http.server 8000`. On macOS/Linux, use `python3 -m http.server 8000`.
+
+Then open <http://localhost:8000> (or <http://127.0.0.1:8000>) in your browser. Keep the terminal open while using the site. Stop the server with `Ctrl+C`.
+
+### If localhost does not open
+
+- Confirm the terminal's current directory contains `index.html`, `style.css`, and `script.js`. Run `dir` in Windows PowerShell or `ls` in macOS/Linux to check.
+- If the command is missing, install Python or use the VS Code **Live Server** extension: open `index.html`, right-click, choose **Open with Live Server**.
+- If port 8000 is already in use, start another port, for example `py -m http.server 8001`, then visit <http://localhost:8001>.
+- A `404` page usually means the server was started in the wrong folder; stop it with `Ctrl+C`, `cd` to the folder containing `index.html`, and restart.
+- If the page loads without styling or behavior, verify that `style.css` and `script.js` are beside `index.html`, then hard-refresh the browser.
 
 ## Use the app
 
-1. Enter an expense description, amount, category, and date.
-2. Select **Add expense**; totals and the category breakdown update.
+1. Enter a description, positive amount, category, and date; choose **Add expense**.
+2. Review totals and category breakdown.
 3. Search by description or filter history by category.
-4. Select **Delete** beside an entry to remove it.
-5. Refresh the page to check persistence.
+4. Delete a transaction using its **Delete** button.
+5. Refresh the page to confirm that entries persist.
 
 ## Data and privacy
 
-Data is stored under the `spendwise-expenses` key in this browser's LocalStorage. Expenses are not uploaded or synchronized. Clearing site data or switching browsers/devices removes access to this browser's saved copy. Avoid using shared devices for private records.
+Entries are stored in this browser's LocalStorage under `spendwise-expenses`. They are not uploaded or synchronized. Clearing site data or using another browser/device means the saved copy is not available there.
 
-## Testing checklist
+## Manual test checklist
 
-Run these checks in a browser before presenting or deploying:
-
-- [ ] Add a valid expense and verify total, category bar, and history update.
-- [ ] Try a blank name, zero/negative amount, more than two decimal places, and invalid date; verify rejection.
-- [ ] Add different categories and verify category and current-month totals.
-- [ ] Search by partial name and filter by category; clear filters and confirm all entries return.
-- [ ] Delete an expense and verify totals update.
-- [ ] Refresh and confirm saved entries remain.
-- [ ] Delete all entries and confirm the empty state returns.
+- [ ] Add a valid expense and confirm summary and history update.
+- [ ] Reject blank description, zero/negative amount, amount with more than 2 decimal places, and invalid date.
+- [ ] Check category totals and current-month summary.
+- [ ] Search and category filters work and can be cleared.
+- [ ] Delete an entry and verify totals update.
+- [ ] Refresh and verify persistence; delete all entries and check the empty state.
 - [ ] Check mobile and desktop widths and browser console.
 
-Interactive browser tests have not been run as part of this repository update; please complete the checklist in a browser.
+Interactive browser tests have not been run from this coding environment; use the checklist above to verify in your browser.
 
-## Publish with GitHub Pages
+## GitHub Pages
 
-1. Open repository **Settings → Pages**.
-2. Under **Build and deployment**, choose **Deploy from a branch**.
-3. Select `main` and the `/(root)` folder, then save.
-4. Wait for deployment. GitHub Pages will show the published URL in Pages settings. The expected URL is <https://prathamesh55-MAV239.github.io/Spend-Wise/> once Pages is enabled and deployment succeeds.
-
-This is a static site, so Pages needs no build command.
-
-## Code overview
-
-- `index.html`: accessible page structure and labeled form controls
-- `style.css`: responsive layout, visual design, focus styles, and reduced-motion support
-- `script.js`: validation, summaries, history filters, safe rendering, and LocalStorage
-
-## Future ideas
-
-- Edit expenses
-- Optional monthly budgets
-- CSV export/import
-- Charts and dark theme
+To publish, open the repository **Settings → Pages**, choose **Deploy from a branch**, select `main` and `/(root)`, then save. Once the deployment completes, GitHub Pages will show the live URL. The expected address is <https://prathamesh55-MAV239.github.io/Spend-Wise/> if Pages is enabled for this repository.
 
 ## License
 
