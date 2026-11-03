@@ -6,10 +6,22 @@
     <meta name="description" content="SpendWise helps you track everyday expenses, understand spending by category, and manage your money with confidence." />
     <meta name="theme-color" content="#f4f7fb" />
     <title>SpendWise — Personal Expense Tracker</title>
+    <script>
+      (function() {
+        try {
+          var saved = localStorage.getItem("spendwise-theme");
+          var prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+          if (saved === "dark" || (!saved && prefersDark)) {
+            document.documentElement.setAttribute("data-theme", "dark");
+          }
+        } catch (e) {}
+      })();
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="style.css" />
+    <script src="html2pdf.bundle.min.js" defer></script>
     <script src="script.js" defer></script>
   </head>
   <body>
@@ -33,6 +45,16 @@
         <header class="topbar">
           <div class="mobile-brand" aria-hidden="true"><span class="brand-mark">S</span><span class="brand-name">spendwise<span>.</span></span></div>
           <p class="tagline">Track your money. <strong>Manage your future.</strong></p>
+          <div class="topbar-actions">
+            <button id="download-pdf-btn" class="action-btn pdf-btn" type="button" aria-label="Download overview as PDF" title="Download overview as PDF">
+              <span class="btn-icon" aria-hidden="true">📥</span>
+              <span class="btn-text">Download PDF</span>
+            </button>
+            <button id="theme-toggle" class="action-btn theme-btn" type="button" aria-label="Switch to dark mode" title="Toggle dark/light theme">
+              <span id="theme-icon" class="btn-icon" aria-hidden="true">🌙</span>
+              <span id="theme-label" class="btn-text">Dark mode</span>
+            </button>
+          </div>
         </header>
         <main class="dashboard" id="overview">
           <section class="welcome-row" aria-labelledby="page-title">

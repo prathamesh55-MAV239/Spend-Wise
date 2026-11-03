@@ -1,4 +1,5 @@
 const STORAGE_KEY = "spendwise-expenses";
+const THEME_KEY = "spendwise-theme";
 const CATEGORY_COLORS = {
   Food: "#f97316",
   Travel: "#3b82f6",
@@ -16,17 +17,75 @@ const formMessage = document.getElementById("form-message");
 const dateInput = document.getElementById("expense-date");
 const searchInput = document.getElementById("expense-search");
 const categoryFilter = document.getElementById("category-filter");
+const themeToggleBtn = document.getElementById("theme-toggle");
+const themeIcon = document.getElementById("theme-icon");
+const themeLabel = document.getElementById("theme-label");
+const downloadPdfBtn = document.getElementById("download-pdf-btn");
+
 const state = { expenses: loadExpenses() };
 
 initializeApp();
 
 function initializeApp() {
+  initTheme();
   dateInput.value = getLocalDateString();
   form.addEventListener("submit", handleExpenseSubmit);
   expenseList.addEventListener("click", handleExpenseDelete);
   searchInput.addEventListener("input", renderExpenseList);
   categoryFilter.addEventListener("change", renderExpenseList);
+  if (themeToggleBtn) themeToggleBtn.addEventListener("click", handleThemeToggle);
+  if (downloadPdfBtn) downloadPdfBtn.addEventListener("click", handleDownloadPDF);
   render();
+}
+
+function initTheme() {
+  let saved = null;
+  try {
+    saved = localStorage.getItem(THEME_KEY);
+  } catch (err) {
+    console.warn("Could not read theme preference.", err);
+  }
+  const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const initialTheme = saved === "dark" || (!saved && prefersDark) ? "dark" : "light";
+  applyTheme(initialTheme);
+
+  if (window.matchMedia) {
+    window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
+      let currentSaved = null;
+      try {
+        currentSaved = localStorage.getItem(THEME_KEY);
+      } catch (err) {}
+      if (!currentSaved) {
+        applyTheme(e.matches ? "dark" : "light");
+      }
+    });
+  }
+}
+
+function applyTheme(theme) {
+  const isDark = theme === "dark";
+  document.documentElement.setAttribute("data-theme", theme);
+  if (themeIcon) themeIcon.textContent = isDark ? "☀️" : "🌙";
+  if (themeLabel) themeLabel.textContent = isDark ? "Light mode" : "Dark mode";
+  if (themeToggleBtn) {
+    themeToggleBtn.setAttribute("aria-label", isDark ? "Switch to light mode" : "Switch to dark mode");
+    themeToggleBtn.setAttribute("title", isDark ? "Switch to light mode" : "Switch to dark mode");
+  }
+  const metaTheme = document.querySelector('meta[name="theme-color"]');
+  if (metaTheme) {
+    metaTheme.setAttribute("content", isDark ? "#0b111e" : "#f4f7fb");
+  }
+}
+
+function handleThemeToggle() {
+  const current = document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
+  const next = current === "dark" ? "light" : "dark";
+  try {
+    localStorage.setItem(THEME_KEY, next);
+  } catch (err) {
+    console.warn("Could not save theme preference.", err);
+  }
+  applyTheme(next);
 }
 
 function handleExpenseSubmit(event) {
@@ -78,11 +137,12 @@ function render() {
   const total = state.expenses.reduce((sum, expense) => sum + expense.amount, 0);
   const categoryTotals = CATEGORIES.map((category) => ({
     category,
-    amount: state.expenses.filter((expense) => expense.category === category)
+    amount: state.expenses
+      .filter((expense) => expense.category === category)
       .reduce((sum, expense) => sum + expense.amount, 0),
   }));
   const topCategory = categoryTotals.reduce(
-    (largest, item) => item.amount > largest.amount ? item : largest,
+    (largest, item) => (item.amount > largest.amount ? item : largest),
     { category: "No data", amount: 0 }
   );
   const now = new Date();
@@ -141,20 +201,22 @@ function renderExpenseList() {
   expenseList.replaceChildren();
   const query = searchInput.value.trim().toLocaleLowerCase();
   const selectedCategory = categoryFilter.value;
-  const filteredExpenses = state.expenses.filter((expense) =>
-    expense.name.toLocaleLowerCase().includes(query) &&
-    (!selectedCategory || expense.category === selectedCategory)
+  const filteredExpenses = state.expenses.filter(
+    (expense) =>
+      expense.name.toLocaleLowerCase().includes(query) &&
+      (!selectedCategory || expense.category === selectedCategory)
   );
   const hasExpenses = state.expenses.length > 0;
   const hasMatches = filteredExpenses.length > 0;
   emptyState.classList.toggle("hidden", hasMatches);
+
   document.getElementById("empty-title").textContent = hasExpenses ? "No matching expenses" : "Your story starts here";
   document.getElementById("empty-description").textContent = hasExpenses
     ? "Try a different search or category filter."
     : "Add your first expense and your spending summary will appear here.";
 
-  const sortedExpenses = [...filteredExpenses].sort((a, b) =>
-    b.date.localeCompare(a.date) || b.createdAt - a.createdAt
+  const sortedExpenses = [...filteredExpenses].sort(
+    (a, b) => b.date.localeCompare(a.date) || b.createdAt - a.createdAt
   );
   sortedExpenses.forEach((expense) => {
     const item = document.createElement("li");
@@ -192,21 +254,219 @@ function renderExpenseList() {
   });
 }
 
+function buildPDFReportElement() {
+  const container = document.createElement("div");
+  container.className = "spendwise-pdf-report";
+
+  const total = state.expenses.reduce((sum, expense) => sum + expense.amount, 0);
+  const now = new Date();
+  const monthlyTotal = state.expenses.reduce((sum, expense) => {
+    const [year, month] = expense.date.split("-").map(Number);
+    return year === now.getFullYear() && month === now.getMonth() + 1 ? sum + expense.amount : sum;
+  }, 0);
+
+  const categoryTotals = CATEGORIES.map((category) => {
+    const amount = state.expenses
+      .filter((expense) => expense.category === category)
+      .reduce((sum, expense) => sum + expense.amount, 0);
+    const percentage = total > 0 ? ((amount / total) * 100).toFixed(1) : "0.0";
+    return { category, amount, percentage };
+  });
+
+  const topCategory = categoryTotals.reduce(
+    (largest, item) => (item.amount > largest.amount ? item : largest),
+    { category: "No data", amount: 0, percentage: "0.0" }
+  );
+
+  const reportDate = new Intl.DateTimeFormat("en-IN", {
+    dateStyle: "full",
+    timeStyle: "short",
+  }).format(new Date());
+
+  const sortedExpenses = [...state.expenses].sort(
+    (a, b) => b.date.localeCompare(a.date) || b.createdAt - a.createdAt
+  );
+
+  container.innerHTML = `
+    <div class="pdf-header">
+      <div class="pdf-brand">
+        <div class="pdf-brand-mark">S</div>
+        <div class="pdf-brand-title">spendwise<span>.</span></div>
+      </div>
+      <div class="pdf-meta-box">
+        <strong>Expense Overview Report</strong>
+        <span>Generated: ${reportDate}</span>
+      </div>
+    </div>
+
+    <div class="pdf-summary-grid">
+      <div class="pdf-card highlight">
+        <div class="pdf-card-label">Total Expenditure</div>
+        <div class="pdf-card-value">${formatCurrency(total)}</div>
+        <div class="pdf-card-sub">${state.expenses.length} transaction${state.expenses.length === 1 ? "" : "s"} recorded</div>
+      </div>
+      <div class="pdf-card">
+        <div class="pdf-card-label">Top Category</div>
+        <div class="pdf-card-value">${topCategory.amount > 0 ? topCategory.category : "No data"}</div>
+        <div class="pdf-card-sub">${formatCurrency(topCategory.amount)} spent (${topCategory.percentage}%)</div>
+      </div>
+      <div class="pdf-card">
+        <div class="pdf-card-label">This Month</div>
+        <div class="pdf-card-value">${formatCurrency(monthlyTotal)}</div>
+        <div class="pdf-card-sub">Current calendar month</div>
+      </div>
+    </div>
+
+    <div class="pdf-section-title">Spending by Category</div>
+    <table class="pdf-category-table">
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th style="text-align: right;">Total Amount</th>
+          <th style="text-align: right;">Share of Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${categoryTotals
+          .map(
+            ({ category, amount, percentage }) => `
+          <tr>
+            <td>
+              <span class="pdf-cat-badge" style="background: ${CATEGORY_COLORS[category]}22; color: ${CATEGORY_COLORS[category]};">
+                ● ${category}
+              </span>
+            </td>
+            <td style="text-align: right; font-weight: 700;">${formatCurrency(amount)}</td>
+            <td style="text-align: right; color: #64748b;">${percentage}%</td>
+          </tr>
+        `
+          )
+          .join("")}
+      </tbody>
+    </table>
+
+    <div class="pdf-section-title">Recent Transactions (${sortedExpenses.length})</div>
+    ${
+      sortedExpenses.length === 0
+        ? `<p style="font-size: 11px; color: #64748b; padding: 12px 0;">No transactions recorded yet.</p>`
+        : `
+      <table class="pdf-history-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Expense Item</th>
+            <th>Category</th>
+            <th style="text-align: right;">Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${sortedExpenses
+            .slice(0, 50)
+            .map(
+              (expense) => `
+            <tr>
+              <td style="white-space: nowrap; color: #64748b;">${formatDate(expense.date)}</td>
+              <td style="font-weight: 600;">${escapeHTML(expense.name)}</td>
+              <td>
+                <span class="pdf-cat-badge" style="background: ${CATEGORY_COLORS[expense.category]}22; color: ${CATEGORY_COLORS[expense.category]};">
+                  ${expense.category}
+                </span>
+              </td>
+              <td style="text-align: right; font-weight: 700;">${formatCurrency(expense.amount)}</td>
+            </tr>
+          `
+            )
+            .join("")}
+        </tbody>
+      </table>
+      ${
+        sortedExpenses.length > 50
+          ? `<p style="font-size: 10px; color: #94a3b8; margin: 4px 0 0;">Showing first 50 transactions.</p>`
+          : ""
+      }
+    `
+    }
+
+    <div class="pdf-footer">
+      <span>SpendWise — Private Personal Finance</span>
+      <span>Confidential & Personal</span>
+    </div>
+  `;
+
+  return container;
+}
+
+async function handleDownloadPDF() {
+  if (!downloadPdfBtn) return;
+  const originalHTML = downloadPdfBtn.innerHTML;
+  downloadPdfBtn.disabled = true;
+  downloadPdfBtn.innerHTML = `<span class="btn-icon" aria-hidden="true">⏳</span><span class="btn-text">Creating PDF...</span>`;
+
+  try {
+    const reportElement = buildPDFReportElement();
+    const wrapper = document.createElement("div");
+    wrapper.className = "pdf-container-offscreen";
+    wrapper.appendChild(reportElement);
+    document.body.appendChild(wrapper);
+
+    if (window.html2pdf) {
+      const opt = {
+        margin: [10, 10, 10, 10],
+        filename: `spendwise-overview-${getLocalDateString()}.pdf`,
+        image: { type: "jpeg", quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true, logging: false },
+        jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+      };
+      await window.html2pdf().set(opt).from(reportElement).save();
+      showFormMessage("Overview PDF downloaded successfully.", "success");
+    } else {
+      window.print();
+      showFormMessage("Print dialog opened for saving overview as PDF.", "success");
+    }
+    wrapper.remove();
+  } catch (error) {
+    console.error("Failed to generate PDF:", error);
+    showFormMessage("Could not generate PDF. Opening print dialog instead.", "error");
+    window.print();
+  } finally {
+    downloadPdfBtn.disabled = false;
+    downloadPdfBtn.innerHTML = originalHTML;
+  }
+}
+
+function escapeHTML(str) {
+  return String(str).replace(/[&<>'"]/g, (tag) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    "'": "&#39;",
+    '"': "&quot;",
+  }[tag] || tag));
+}
+
 function loadExpenses() {
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (!stored) return [];
     const parsed = JSON.parse(stored);
     if (!Array.isArray(parsed)) return [];
-    return parsed.filter((expense) =>
-      expense && typeof expense.id === "string" && typeof expense.name === "string" &&
-      expense.name.length > 0 && CATEGORIES.includes(expense.category) &&
-      isValidDate(expense.date) && Number.isFinite(expense.amount) &&
-      expense.amount > 0 && expense.amount <= MAX_AMOUNT
-    ).map((expense) => ({
-      ...expense,
-      createdAt: Number.isFinite(expense.createdAt) ? expense.createdAt : 0,
-    }));
+    return parsed
+      .filter(
+        (expense) =>
+          expense &&
+          typeof expense.id === "string" &&
+          typeof expense.name === "string" &&
+          expense.name.length > 0 &&
+          CATEGORIES.includes(expense.category) &&
+          isValidDate(expense.date) &&
+          Number.isFinite(expense.amount) &&
+          expense.amount > 0 &&
+          expense.amount <= MAX_AMOUNT
+      )
+      .map((expense) => ({
+        ...expense,
+        createdAt: Number.isFinite(expense.createdAt) ? expense.createdAt : 0,
+      }));
   } catch (error) {
     console.warn("Could not read SpendWise data from browser storage.", error);
     return [];
@@ -241,7 +501,9 @@ function formatCurrency(value) {
 
 function formatDate(value) {
   const [year, month, day] = value.split("-").map(Number);
-  return new Intl.DateTimeFormat("en-IN", { day: "numeric", month: "short", year: "numeric" }).format(new Date(year, month - 1, day));
+  return new Intl.DateTimeFormat("en-IN", { day: "numeric", month: "short", year: "numeric" }).format(
+    new Date(year, month - 1, day)
+  );
 }
 
 function showFormMessage(message, type) {

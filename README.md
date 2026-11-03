@@ -10,14 +10,17 @@ A responsive personal expense tracker built with HTML, CSS, and vanilla JavaScri
 - Food, Travel, Education, Shopping, and Other categories
 - Lifetime and current-month spending summaries, plus top category
 - Visual category totals; search and category filters for transaction history
+- Dark and Light mode toggle with persistent preference and harmonious contrast
+- One-click PDF export to save your complete financial overview to your PC
 - Newest-first history and individual delete actions
 - LocalStorage persistence, rupee formatting, input validation, and responsive layout
 
 ## Files
 
-- `index.html` — dashboard layout and accessible controls
-- `style.css` — visual styling and responsive layouts
-- `script.js` — validation, summaries, filters, and LocalStorage
+- `index.html` — dashboard layout, accessible controls, and theme initialization
+- `style.css` — harmonious light/dark design tokens, responsive layout, and print/PDF styles
+- `script.js` — validation, summaries, filters, theme toggle, PDF generator, and LocalStorage
+- `html2pdf.bundle.min.js` — bundled offline-ready PDF generator library
 
 ## Run locally on Windows
 
@@ -53,7 +56,7 @@ Replace that example path with the folder where your repository is saved. `Get-C
 - If port 8000 is already occupied, use `py -m http.server 8001` and open <http://localhost:8001>.
 - A `404` for `/` means the current server folder doesn't contain an `index.html`; stop it with `Ctrl+C`, `cd` into the project folder, and restart.
 - A `404` for `/favicon.ico` alone is harmless and does not prevent the app from working.
-- If the page loads without styling or behavior, confirm the three project files are together in the folder, then hard-refresh the browser.
+- If the page loads without styling or behavior, confirm the project files are together in the folder, then hard-refresh the browser.
 
 ## Run locally on macOS/Linux
 
@@ -67,27 +70,29 @@ Open <http://localhost:8000> and leave the terminal running while you use the ap
 
 ## Use the app
 
-1. Enter a description, positive amount, category, and date; choose **Add expense**.
-2. Review totals and category breakdown.
-3. Search by description or filter history by category.
-4. Delete a transaction using its **Delete** button.
-5. Refresh the page to confirm that entries persist.
+1. **Add expenses:** Enter a description, positive amount, category, and date; choose **Add expense**.
+2. **Review summaries:** Review total expenditure, top category, and this month's spending.
+3. **Filter and search:** Search by description or filter history by category.
+4. **Dark / Light mode:** Click the **Dark / Light mode** toggle in the top bar to switch themes. Your choice is remembered automatically.
+5. **Download PDF overview:** Click **Download PDF** to export and save a structured executive spending report to your computer.
+6. **Delete:** Delete an individual transaction using its **Delete** button.
+7. **Persistence:** Refresh the page to confirm that entries persist.
 
 ## Data and privacy
 
-Entries are stored in this browser's LocalStorage under `spendwise-expenses`. They are not uploaded or synchronized. Clearing site data or using another browser/device means the saved copy is not available there.
+Entries are stored in this browser's LocalStorage under `spendwise-expenses`. Theme preference is saved under `spendwise-theme`. They are not uploaded or synchronized. Clearing site data or using another browser/device means the saved copy is not available there.
 
 ## Manual test checklist
 
 - [ ] Add a valid expense and confirm summary and history update.
+- [ ] Toggle dark and light mode; check colors, cards, and input visibility in both modes.
+- [ ] Click "Download PDF" and verify the overview PDF report downloads.
 - [ ] Reject blank description, zero/negative amount, amount with more than 2 decimal places, and invalid date.
 - [ ] Check category totals and current-month summary.
 - [ ] Search and category filters work and can be cleared.
 - [ ] Delete an entry and verify totals update.
 - [ ] Refresh and verify persistence; delete all entries and check the empty state.
 - [ ] Check mobile and desktop widths and browser console.
-
-Interactive browser tests have not been run from this coding environment; use the checklist above to verify in your browser.
 
 ## GitHub Pages
 
