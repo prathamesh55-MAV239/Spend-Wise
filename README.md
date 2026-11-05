@@ -2,41 +2,103 @@
 
 # SpendWise
 
-### A clearer picture of where your money goes.
+<p align="center">
+  <strong>Track every rupee. Understand where it goes.</strong>
+</p>
 
-A lightweight, privacy-minded expense tracker for recording everyday spending, understanding monthly and category totals, finding transactions, and exporting a PDF report.
+<p align="center">
+  <a href="https://prathamesh55-MAV239.github.io/Spend-Wise/">
+    <img src="https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-2563eb?style=for-the-badge&logo=github&logoColor=white" alt="Live Demo" />
+  </a>
+</p>
 
-[**Open the live app →**](https://prathamesh55-MAV239.github.io/Spend-Wise/)
-
-<br />
-
-![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white)
-![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-ES6%2B-F7DF1E?style=flat-square&logo=javascript&logoColor=111827)
-![No build step](https://img.shields.io/badge/build-no%20build%20step-16a085?style=flat-square)
-![License: MIT](https://img.shields.io/badge/license-MIT-2563eb?style=flat-square)
+<p align="center">
+  <img src="https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white" alt="HTML5" />
+  <img src="https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white" alt="CSS3" />
+  <img src="https://img.shields.io/badge/JavaScript-ES6%2B-F7DF1E?style=flat-square&logo=javascript&logoColor=black" alt="JavaScript" />
+  <img src="https://img.shields.io/badge/Storage-localStorage-10b981?style=flat-square" alt="LocalStorage" />
+  <img src="https://img.shields.io/badge/License-MIT-111827?style=flat-square" alt="MIT License" />
+</p>
 
 </div>
 
+SpendWise is a private, lightweight expense tracker built for people who want clarity over their money without creating an account, connecting a database, or trusting a bloated app.
+
+It helps you log daily spending, monitor category trends, review monthly totals, and export a clean PDF summary — all directly in your browser.
+
 ---
 
-## At a glance
+## Why SpendWise?
 
-SpendWise keeps personal expense tracking simple: add a transaction, see your totals update, and explore spending by category. It runs in the browser with plain HTML, CSS, and JavaScript—no account or application server required.
+Most finance apps either feel too noisy or too invasive. SpendWise keeps things simple:
 
-- **Private by design:** Expense records and your theme preference are saved in your browser's local storage.
-- **Useful at a glance:** Review all-time expenditure, this month's total, and your highest-spend category.
-- **Easy to explore:** Search transactions and filter by category.
-- **Ready to take with you:** Generate a PDF overview of your spending.
-- **Comfortable to use:** Responsive layout with light and dark themes.
+- no sign-up required
+- no backend or server dependency
+- all data stays on the device you use
+- instant summaries and category-wise insights
+- a clean dashboard designed for quick decision-making
 
-## Try it
+---
 
-Visit the [SpendWise live demo](https://prathamesh55-MAV239.github.io/Spend-Wise/)—no installation or account required.
+## Highlights
 
-## Run locally
+<table>
+  <tr>
+    <td width="33%" valign="top">
+      <h3>📊 Instant insights</h3>
+      See total spending, current month spend, and your top category at a glance.
+    </td>
+    <td width="33%" valign="top">
+      <h3>🔍 Smart filtering</h3>
+      Search transactions and filter by category to find expenses in seconds.
+    </td>
+    <td width="33%" valign="top">
+      <h3>📄 PDF export</h3>
+      Generate a polished summary report with category totals and recent transactions.
+    </td>
+  </tr>
+  <tr>
+    <td width="33%" valign="top">
+      <h3>🔒 Privacy-first</h3>
+      Your expenses live in browser storage, not in a cloud database.
+    </td>
+    <td width="33%" valign="top">
+      <h3>🌗 Beautiful UI</h3>
+      Sleek dashboard styling with light and dark mode support.
+    </td>
+    <td width="33%" valign="top">
+      <h3>⚡ Zero setup</h3>
+      No build tools, no installation, no package manager required.
+    </td>
+  </tr>
+</table>
 
-SpendWise has no package installation or build step. You need Git and a modern browser. Serving the files locally with Python is optional but recommended.
+---
+
+## Live Demo
+
+Open the app here:
+
+[**Launch SpendWise**](https://prathamesh55-MAV239.github.io/Spend-Wise/)
+
+---
+
+## Features
+
+- 💸 Add expenses with description, amount, category, and date
+- 🧾 Track total expenditure and monthly spending
+- 📈 Identify your top spending category automatically
+- 🏷️ Group costs into Food, Travel, Education, Shopping, and Other
+- 🔎 Search by transaction name and filter by category
+- 🌙 Toggle between light and dark modes
+- 📤 Export a PDF overview report for personal or review use
+- 🛡️ Keep all data locally in the browser using `localStorage`
+
+---
+
+## Quick Start
+
+### Run locally
 
 ```bash
 git clone https://github.com/prathamesh55-MAV239/Spend-Wise.git
@@ -44,72 +106,107 @@ cd Spend-Wise
 python -m http.server 8000
 ```
 
-Open [http://localhost:8000](http://localhost:8000) in your browser. If Python is unavailable, you can open `index.html` directly.
+Then open:
 
-To stop the local server, press `Ctrl+C` in the terminal.
+```text
+http://localhost:8000
+```
 
-## How to use
+If Python is not available, you can also open `index.html` directly in a browser.
 
-1. **Add an expense** with a description, amount, category, and date. Amounts must be positive and may have up to two decimal places.
-2. **Review your dashboard** for total expenditure, spending this calendar month, and the top category.
-3. **Explore your history** by searching expense descriptions or selecting a category.
-4. **Change the appearance** with the theme control; SpendWise can also follow your system's preferred color scheme until you choose a theme yourself.
-5. **Export a report** with **Download PDF**. The report includes summary totals, a category breakdown, and up to 50 transactions. If PDF generation is unavailable, the app offers the browser print dialog as a fallback.
-6. **Remove an entry** with its **Delete** button.
+---
 
-## Privacy and data
+## How it works
 
-Expense data is stored in the browser's `localStorage` on the device and browser where you use SpendWise. It is not synced to an account or server, so it will not automatically appear on another device or browser. Clearing this site's browser data can remove saved expenses and preferences; consider saving a PDF report if you need a separate record.
+1. Enter a transaction with its name, amount, category, and date.
+2. The app updates the total expenditure and monthly summary automatically.
+3. You can filter or search your records to review spending history.
+4. Use the PDF export button to download a snapshot of your budget overview.
+5. Your information stays on your device and is not sent to a server.
 
-| Storage key | Contents |
-| --- | --- |
-| `spendwise-expenses` | Expense records, including description, amount, category, date, and creation time |
-| `spendwise-theme` | Your selected `dark` or `light` theme, when set |
+---
 
-The app also loads DM Sans and Manrope from Google Fonts when a network connection is available. The expense records themselves remain in browser storage.
-
-## Project structure
+## Project Structure
 
 ```text
 Spend-Wise/
-├── index.html             # App structure and accessible interface
-├── style.css              # Layout, themes, responsive styling, and print styles
-├── script.js              # Expense data, summaries, filtering, and PDF export
-├── html2pdf.bundle.min.js # Bundled client-side PDF generation library
-├── LICENSE                # MIT License
-└── README.md              # Project documentation
+├── index.html               # Main UI and dashboard layout
+├── style.css                # Modern styling, responsive layout, themes
+├── script.js                # Logic for tracking expenses, totals, search, and PDF export
+├── html2pdf.bundle.min.js   # PDF generation library
+├── LICENSE                  # MIT license
+├── README.md                # Project documentation
+└── .gitignore               # Ignore editor/system files
 ```
 
-## Built with
+---
 
-- **HTML5** for semantic page structure and form controls
-- **CSS3** for responsive layouts, theme styles, and print presentation
-- **Vanilla JavaScript** for app behavior and browser storage
-- **html2pdf.js bundle** for client-side PDF report generation
+## Privacy & Data Storage
 
-## Deploy with GitHub Pages
+SpendWise is intentionally private by design.
 
-This is a static site and does not require a build command.
+| Storage key | Purpose |
+| --- | --- |
+| `spendwise-expenses` | Stores the user's expense records locally in the browser |
+| `spendwise-theme` | Stores the selected light/dark theme preference |
 
-1. Push or fork the repository to GitHub.
-2. Open **Settings → Pages** for the repository.
-3. Under **Build and deployment**, choose **Deploy from a branch**.
-4. Select the `main` branch and the `/ (root)` folder, then save.
+This means:
 
-GitHub Pages will publish the site at the URL shown in the Pages settings.
+- no user accounts are required
+- no backend/database is used
+- data remains in the browser where it was created
+- clearing browser data will remove saved local records
+
+---
+
+## Tech Stack
+
+- HTML5 for app structure
+- CSS3 for responsive design and themes
+- Vanilla JavaScript for logic and state management
+- `localStorage` for browser-side persistence
+- `html2pdf` for PDF generation
+
+---
+
+## Deployment
+
+This project is a static frontend and works well with GitHub Pages.
+
+1. Push the repo to GitHub.
+2. Open the repository settings.
+3. Navigate to **Pages**.
+4. Select the `main` branch and the root folder.
+5. Save your settings.
+
+GitHub Pages will publish the app automatically.
+
+---
 
 ## Contributing
 
-Bug reports, ideas, and pull requests are welcome. For a change, fork the repository, create a focused branch, make and test your update in a browser, then open a pull request describing what changed.
+Contributions, ideas, and bug reports are welcome.
+
+```bash
+git checkout -b feature/my-improvement
+# make your changes
+git commit -m "Add my improvement"
+git push origin feature/my-improvement
+```
+
+Then open a pull request on GitHub.
+
+---
 
 ## License
 
-SpendWise is distributed under the [MIT License](LICENSE).
+This project is licensed under the [MIT License](LICENSE).
 
 ---
 
 <div align="center">
 
-**SpendWise** · Simple tracking. Smarter choices.
+<strong>SpendWise</strong><br>
+Simple tracking. Smarter choices.
 
 </div>
