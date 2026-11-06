@@ -133,23 +133,33 @@ function handleExpenseDelete(event) {
   if (!saved) showFormMessage("Expense deleted for this session, but browser storage is unavailable.", "error");
 }
 
-function render() {
-  const total = state.expenses.reduce((sum, expense) => sum + expense.amount, 0);
-  const categoryTotals = CATEGORIES.map((category) => ({
-    category,
-    amount: state.expenses
+function calculateExpenseSummary(expenses) {
+  const total = expenses.reduce((sum, expense) => sum + expense.amount, 0);
+  const categoryTotals = CATEGORIES.map((category) => {
+    const amount = expenses
       .filter((expense) => expense.category === category)
-      .reduce((sum, expense) => sum + expense.amount, 0),
-  }));
+      .reduce((sum, expense) => sum + expense.amount, 0);
+    return {
+      category,
+      amount,
+      percentage: total > 0 ? ((amount / total) * 100).toFixed(1) : "0.0",
+    };
+  });
   const topCategory = categoryTotals.reduce(
     (largest, item) => (item.amount > largest.amount ? item : largest),
-    { category: "No data", amount: 0 }
+    { category: "No data", amount: 0, percentage: "0.0" }
   );
   const now = new Date();
-  const monthlyTotal = state.expenses.reduce((sum, expense) => {
+  const monthlyTotal = expenses.reduce((sum, expense) => {
     const [year, month] = expense.date.split("-").map(Number);
     return year === now.getFullYear() && month === now.getMonth() + 1 ? sum + expense.amount : sum;
   }, 0);
+
+  return { total, monthlyTotal, categoryTotals, topCategory };
+}
+
+function render() {
+  const { total, monthlyTotal, categoryTotals, topCategory } = calculateExpenseSummary(state.expenses);
 
   document.getElementById("total-expenses").textContent = formatCurrency(total);
   document.getElementById("transaction-count").textContent = `${state.expenses.length} transaction${state.expenses.length === 1 ? "" : "s"} recorded`;
@@ -258,25 +268,7 @@ function buildPDFReportElement() {
   const container = document.createElement("div");
   container.className = "spendwise-pdf-report";
 
-  const total = state.expenses.reduce((sum, expense) => sum + expense.amount, 0);
-  const now = new Date();
-  const monthlyTotal = state.expenses.reduce((sum, expense) => {
-    const [year, month] = expense.date.split("-").map(Number);
-    return year === now.getFullYear() && month === now.getMonth() + 1 ? sum + expense.amount : sum;
-  }, 0);
-
-  const categoryTotals = CATEGORIES.map((category) => {
-    const amount = state.expenses
-      .filter((expense) => expense.category === category)
-      .reduce((sum, expense) => sum + expense.amount, 0);
-    const percentage = total > 0 ? ((amount / total) * 100).toFixed(1) : "0.0";
-    return { category, amount, percentage };
-  });
-
-  const topCategory = categoryTotals.reduce(
-    (largest, item) => (item.amount > largest.amount ? item : largest),
-    { category: "No data", amount: 0, percentage: "0.0" }
-  );
+  const { total, monthlyTotal, categoryTotals, topCategory } = calculateExpenseSummary(state.expenses);
 
   const reportDate = new Intl.DateTimeFormat("en-IN", {
     dateStyle: "full",
